@@ -253,13 +253,6 @@ export function AlarmPlanEditorPage() {
         <p className="muted">Validation checks and coverage warnings are calculated locally in this demo environment.</p>
       </PageSection>
 
-      <PageSection title="Authoring best practices" subtitle="Recommended process for reliable rollout">
-        <ul className="item-list">
-          <li>Document assumptions for staffing, availability windows, and fallback resources.</li>
-          <li>Capture rationale for each major change to support audits and post-incident review.</li>
-          <li>Run a final peer review before escalating the plan to formal approval stages.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

@@ -13,13 +13,6 @@ export function SecurityArchitecturePage() {
         </ul>
       </PageSection>
 
-      <PageSection title="Hardening roadmap" subtitle="Suggested sequence toward enterprise deployment">
-        <ul className="item-list">
-          <li>Move access decisions to backend policy checks and role claims validation.</li>
-          <li>Add centralized logging, security monitoring, and incident response hooks.</li>
-          <li>Introduce threat modeling and recurring penetration tests in release cadence.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

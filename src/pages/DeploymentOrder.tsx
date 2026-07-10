@@ -68,14 +68,6 @@ export function DeploymentOrderPage() {
       <PageSection title="External deployment order" subtitle="Read-only sequence derived automatically from approved alarm plans">
         <p className="muted">This demo presents a preview of the generated order and interface handoff logic.</p>
       </PageSection>
-
-      <PageSection title="Operational recommendation" subtitle="How teams use this view in practice">
-        <ul className="item-list">
-          <li>Keep local and derived orders aligned to avoid conflicting dispatch behavior.</li>
-          <li>Document rationale for manual ordering exceptions.</li>
-          <li>Review ETA assumptions after major resource or traffic pattern changes.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

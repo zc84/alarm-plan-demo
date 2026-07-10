@@ -38,13 +38,6 @@ export function IntegrationPreviewPage() {
         </ul>
       </PageSection>
 
-      <PageSection title="Integration roadmap" subtitle="Practical next steps for production readiness">
-        <ul className="item-list">
-          <li>Introduce signed API requests and transport-level auditing.</li>
-          <li>Map transfer retries and dead-letter queues for robust error handling.</li>
-          <li>Align staging policies with formal release governance.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

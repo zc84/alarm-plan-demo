@@ -133,13 +133,6 @@ export function AlarmPlansPage() {
         </table>
       </PageSection>
 
-      <PageSection title="Governance notes" subtitle="Recommended standards for maintainable plan quality">
-        <ul className="item-list">
-          <li>Use semantic versioning and document every operationally relevant change.</li>
-          <li>Keep ownership clear when plans involve multiple fire departments or partner agencies.</li>
-          <li>Route major updates through approval stages before publishing to production systems.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

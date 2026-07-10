@@ -10,7 +10,7 @@ export function PageSection({ title, subtitle, children }: PropsWithChildren<Pag
     <section className="page-section">
       <header className="page-section-header">
         <h3>{title}</h3>
-        {subtitle ? <p>{subtitle}</p> : null}
+        {subtitle ? <p className="section-description">{subtitle}</p> : null}
       </header>
       <div className="page-section-body">{children}</div>
     </section>

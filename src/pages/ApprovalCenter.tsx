@@ -157,13 +157,6 @@ export function ApprovalCenterPage() {
         </ol>
       </PageSection>
 
-      <PageSection title="Decision guidance" subtitle="Recommended approval discipline for operational quality">
-        <ul className="item-list">
-          <li>Record meaningful comments for both approvals and rejections to keep traceability high.</li>
-          <li>Escalate overdue requests early to avoid blocked publishing and outdated procedures.</li>
-          <li>Use stage ownership consistently so district and state responsibilities remain clear.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

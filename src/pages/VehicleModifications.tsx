@@ -31,13 +31,6 @@ export function VehicleModificationsPage() {
         </table>
       </PageSection>
 
-      <PageSection title="Fleet continuity" subtitle="Recommended checks when equipment availability changes">
-        <ul className="item-list">
-          <li>Validate replacement suitability against incident profiles and expected load.</li>
-          <li>Update dispatch logic immediately when a critical unit is removed from service.</li>
-          <li>Link task closure to approval workflows to keep plans operationally current.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

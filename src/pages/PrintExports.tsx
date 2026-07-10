@@ -57,13 +57,6 @@ export function PrintExportsPage() {
         {lastExportMessage ? <p className="muted top-gap">{lastExportMessage}</p> : null}
       </PageSection>
 
-      <PageSection title="Output strategy" subtitle="Typical publication and handover patterns">
-        <ul className="item-list">
-          <li>Use print profiles for station binders, field vehicles, and command center boards.</li>
-          <li>Prefer structured exports for integrations, analytics, and archival retention.</li>
-          <li>Bundle delivery logs with approval evidence for complete audit readiness.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

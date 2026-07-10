@@ -31,13 +31,6 @@ export function AlarmDevicesPage() {
         </table>
       </PageSection>
 
-      <PageSection title="Design intent" subtitle="Why this matrix matters in operational planning">
-        <ul className="item-list">
-          <li>Each category can define specific channels and staffing assumptions per time window.</li>
-          <li>Validation warnings highlight potential response risks before a plan is approved.</li>
-          <li>The structure is prepared for later integration with real alerting infrastructure.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

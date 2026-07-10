@@ -28,13 +28,6 @@ export function AdditionalModulesPage() {
         </ul>
       </PageSection>
 
-      <PageSection title="Implementation notes" subtitle="How these modules support day-to-day operations">
-        <ul className="item-list">
-          <li>Modules are intentionally decoupled so each district can activate only what is required.</li>
-          <li>Each extension can later be connected to real APIs without changing the workflow structure.</li>
-          <li>This demo keeps all logic client-side to focus on usability and process clarity.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }

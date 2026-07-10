@@ -3,13 +3,13 @@ import { PageSection } from '../components/PageSection'
 export function DocumentationPage() {
   return (
     <div className="page-grid">
-      <PageSection title="Documentation" subtitle="Feature-based UI guide for this client-side demo">
+      <PageSection title="User Guide" subtitle="Feature-based UI guide for this client-side demo">
         <ul className="item-list">
           <li>
             <strong>Roles & users are required by spec</strong>
             <p>
               Yes — this is a core RFP requirement. The app must support role-based visibility and actions, multi-role users, and
-              active context selection after login. In this demo, this is implemented in Login &amp; Role and reflected by permission
+              active context selection after login. In this demo, this is implemented in Identity &amp; Access and reflected by permission
               gates throughout feature screens.
             </p>
           </li>
@@ -62,10 +62,10 @@ export function DocumentationPage() {
             </p>
           </li>
           <li>
-            <strong>Login &amp; Role</strong>
+            <strong>Identity &amp; Access</strong>
             <p>
-              User chooses demo user, active role, and scope. This directly changes visible permissions and action availability across
-              the app.
+              User selects a profile from a dropdown. The app then applies that user’s default role and scope automatically and updates
+              role-based visibility across modules.
             </p>
           </li>
           <li>
@@ -144,7 +144,7 @@ export function DocumentationPage() {
 
       <PageSection title="How to navigate" subtitle="Suggested walkthrough for reviewers">
         <ol className="step-list">
-          <li>Go to Login &amp; Role and switch user/role/scope context.</li>
+          <li>Go to Identity &amp; Access and pick a user profile from the dropdown.</li>
           <li>Review Alarm Plans and open the Alarm Plan Editor wizard.</li>
           <li>Use Approval Center to approve/reject and observe state changes.</li>
           <li>Inspect Operational Zones, Integration Preview, and Audit Log.</li>

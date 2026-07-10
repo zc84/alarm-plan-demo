@@ -3,27 +3,27 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 
 const navItems = [
-  { to: '/', label: 'Dashboard' },
-  { to: '/login', label: 'Login & Role' },
-  { to: '/alarm-plans', label: 'Alarm Plans' },
-  { to: '/approval-center', label: 'Approval Center' },
-  { to: '/zones', label: 'Operational Zones' },
-  { to: '/alarm-devices', label: 'Alarm Devices' },
-  { to: '/deployment-order', label: 'Deployment Order' },
-  { to: '/vehicle-modifications', label: 'Vehicle Changes' },
-  { to: '/additional-modules', label: 'Additional Modules' },
-  { to: '/phone-list', label: 'Phone List' },
-  { to: '/heavy-load-switching', label: 'Heavy-Load Switch' },
-  { to: '/checklists', label: 'Checklists' },
-  { to: '/poi-management', label: 'POI Management' },
-  { to: '/fire-department-info', label: 'FD Info' },
-  { to: '/operation-feedback', label: 'Operation Feedback' },
-  { to: '/vehicle-resources', label: 'Vehicle Resources' },
-  { to: '/documents-workspace', label: 'Documents' },
-  { to: '/integration-preview', label: 'Integration Preview' },
-  { to: '/security-architecture', label: 'Security & Architecture' },
-  { to: '/print-exports', label: 'Print & Exports' },
-  { to: '/audit-log', label: 'Audit Log' },
+  { to: '/', label: 'Dashboard', icon: '⌂' },
+  { to: '/login', label: 'Identity & Access', icon: '◉' },
+  { to: '/alarm-plans', label: 'Alarm Plans', icon: '▦' },
+  { to: '/approval-center', label: 'Approval Center', icon: '✓' },
+  { to: '/zones', label: 'Operational Zones', icon: '⌖' },
+  { to: '/alarm-devices', label: 'Alarm Devices', icon: '⏺' },
+  { to: '/deployment-order', label: 'Deployment Order', icon: '⇅' },
+  { to: '/vehicle-modifications', label: 'Vehicle Changes', icon: '⚙' },
+  { to: '/additional-modules', label: 'Additional Modules', icon: '⊞' },
+  { to: '/phone-list', label: 'Phone List', icon: '☎' },
+  { to: '/heavy-load-switching', label: 'Heavy-Load Switch', icon: '⟲' },
+  { to: '/checklists', label: 'Checklists', icon: '☑' },
+  { to: '/poi-management', label: 'POI Management', icon: '⌘' },
+  { to: '/fire-department-info', label: 'FD Info', icon: '⚑' },
+  { to: '/operation-feedback', label: 'Operation Feedback', icon: '✎' },
+  { to: '/vehicle-resources', label: 'Vehicle Resources', icon: '⚒' },
+  { to: '/documents-workspace', label: 'Documents', icon: '☰' },
+  { to: '/integration-preview', label: 'Integration Preview', icon: '⇄' },
+  { to: '/security-architecture', label: 'Security & Architecture', icon: '⛨' },
+  { to: '/print-exports', label: 'Print & Exports', icon: '⎙' },
+  { to: '/audit-log', label: 'Audit Log', icon: '◷' },
 ]
 
 export function Layout() {
@@ -58,7 +58,7 @@ export function Layout() {
           <img className="brand-logo" src="/ooelfv-logo.svg" alt="OÖ Landes-Feuerwehrverband" />
           <div>
             <h1>OÖLFV Alarm Planning</h1>
-            <p>Landes-Feuerwehrverband Style Workspace</p>
+            <p>Alarm Plan Demo Workspace</p>
           </div>
         </div>
 
@@ -66,7 +66,7 @@ export function Layout() {
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} end={item.to === '/'} className={({ isActive }) => (isActive ? 'active' : '')}>
               <span className="nav-dot" aria-hidden="true">
-                {item.label.slice(0, 2).toUpperCase()}
+                {item.icon}
               </span>
               <span>{item.label}</span>
             </NavLink>
@@ -84,19 +84,15 @@ export function Layout() {
             <p>
               Role: <strong>{role?.label}</strong>
             </p>
+            <p>
+              Scope: <strong>{currentContext.scopeType} / {currentContext.scopeValue}</strong>
+            </p>
             <div className="header-links">
-              <Link to="/documentation">Documentation</Link>
-              <Link to="/login">Change user</Link>
+              <Link to="/documentation">User Guide</Link>
+              <Link to="/login">Switch identity context</Link>
             </div>
           </div>
           <div className="header-meta">
-            <div className="meta-chip">
-              <span className="meta-label">Scope</span>
-              <strong>
-                {currentContext.scopeType} / {currentContext.scopeValue}
-              </strong>
-              <small>ALL means state-wide visibility across Upper Austria.</small>
-            </div>
             <p>
               Last sync: <strong>just now</strong>
             </p>

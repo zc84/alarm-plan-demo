@@ -43,6 +43,24 @@ function readStoredValue<T>(key: string, fallback: T): T {
   }
 }
 
+function resolveScopeValue(role: RoleDefinition['key'], userId: string) {
+  const currentUser = users.find((entry) => entry.id === userId) ?? users[0]
+  const roleDefinition = roleDefinitions.find((entry) => entry.key === role)
+  const scopeType = roleDefinition?.scopeType ?? 'ALL'
+
+  const scopeValueByType: Record<ScopeType, string> = {
+    ALL: 'Upper Austria',
+    DISTRICT: currentUser.district ?? 'Linz-Land',
+    MUNICIPALITY: currentUser.municipality ?? 'Ansfelden',
+    FIRE_DEPARTMENT: currentUser.fireDepartment ?? 'FF Ansfelden',
+  }
+
+  return {
+    scopeType,
+    scopeValue: scopeValueByType[scopeType],
+  }
+}
+
 export function AppProvider({ children }: PropsWithChildren) {
   const [currentContext, setCurrentContext] = useState<ActiveContext>(() =>
     readStoredValue(STORAGE_KEYS.currentContext, {
@@ -260,13 +278,28 @@ export function AppProvider({ children }: PropsWithChildren) {
       currentContext,
       setCurrentUserId: (id: string) => {
         const user = users.find((entry) => entry.id === id) ?? users[0]
+        const defaultRole = user.availableRoles[0]
+        const defaultScope = resolveScopeValue(defaultRole, user.id)
+
         setCurrentContext((prev) => ({
           ...prev,
           userId: user.id,
-          role: user.availableRoles[0],
+          role: defaultRole,
+          scopeType: defaultScope.scopeType,
+          scopeValue: defaultScope.scopeValue,
         }))
       },
-      setRole: (role) => setCurrentContext((prev) => ({ ...prev, role })),
+      setRole: (role) =>
+        setCurrentContext((prev) => {
+          const nextScope = resolveScopeValue(role, prev.userId)
+
+          return {
+            ...prev,
+            role,
+            scopeType: nextScope.scopeType,
+            scopeValue: nextScope.scopeValue,
+          }
+        }),
       setScope: (scopeType, scopeValue) => setCurrentContext((prev) => ({ ...prev, scopeType, scopeValue })),
       approveRequest,
       rejectRequest,

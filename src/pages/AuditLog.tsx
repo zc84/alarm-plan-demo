@@ -29,13 +29,6 @@ export function AuditLogPage() {
         </table>
       </PageSection>
 
-      <PageSection title="Compliance perspective" subtitle="Why this audit stream is operationally critical">
-        <ul className="item-list">
-          <li>Every approval decision should be attributable, timestamped, and reviewable.</li>
-          <li>Audit entries support post-incident analysis and legal defensibility.</li>
-          <li>Consistent event naming improves searchability for governance and QA teams.</li>
-        </ul>
-      </PageSection>
     </div>
   )
 }
