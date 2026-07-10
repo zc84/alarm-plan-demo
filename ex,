@@ -1,0 +1,1146 @@
+expop5'expop,
+]
+
+, ex sexpopo
+ex,
+   expo   exus]
+
+, ex sexpr) =>ex,
+   expo    <o                  mesex,
+ 'expop5'/m]
+
+, ex sexport {ex,
+   expoex  } 
+, ex sexpr) =xt/   expo    <o   rtexpop5'ed}expop5'expop,
+]
+
+,audieam]er]
+
+,audieam]
+
+,audiexpto: '
+,audiexl: expop5'expop,
+]
+
+, ex: ]
+
+ones', label: ex,
+   expol   ne
+, ex sexp    Aex,
+rm-   expo      
+, Al, ex sexpr },
+}e={}
+ex,
+apex,
+al  en]
+
+, ex s
+ ].t]
+
+, ex lue as typeo  { t ].t]al
+, eng-
+,e)
+>
+ ex,
+ex((ex,elrting D>
+icesex(,
+ex((ex, maex((ex, d >   er
+    setA      }  
+t > srcr' }t > srcro
+    incl    initca  )    s/R   .it== ic  ,    ,
+    se  ,    ,
+         ,
+ se       se s  ,ed    ,    ,
+    se  ,    ,
+         ,
+ se       se s  ,ed  .f         ,
+ eg    se Pr         ,
+ s t se      t-    se  ,    ,
+    rint & Expo         ,
+ so: se      lo .      se si         ,
+ soa se :  soa se      ai .ccture' omon om la  Na omon om  ro     omon om l xport function Layo  )
+}
+EOF
+
+cat > src/comex,> ex,
+expop5'expop,
+]
+
+, ex sexex}
+)
+    nst    nst    nst    nsitem) => item.id === currentUserId) ?? users[0]
+  const role = roleDefinitions.find((item) => item.key === currentRole)
+
+  return (
+    <div className="app-shell">
+      <aside className="sidebar">
+        <h1>Alarm Plan Demo</h1>
+        <p className="subtitle">Client-side React demonstration aligned with the OÖLFV RFP.</p>
+
+        <RoleSwitcher />
+
+        <nav>
+          {menu.map((item) => (
+            <NavLink key={item.to} to={item.to} end={item.to === '/'}>
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+      </aside>
+
+      <main className="content">
+        <header className="topbar">
+          <div>
+            <strong>{user.name}</strong>
+            <p>
+              Active role: {role?.label} · Scope: {role?.scopeType}
+            </p>
+          </div>
+          <span className="badge">No backend/API · Demo Mode</span>
+        </header>
+
+        <Outlet />
+      </main>
+    </div>
+  )
+}
+EOF
+
+cat > src/pages/Dashboard.tsx <<'EOF'
+import { alarmPlans, functionalCoverage, vehicleTasks, zones } from '../data/mockData'
+import { useAppContext } from '../context/AppContext'
+
+export function DashboardPage() {
+  const { approvals } = useAppContext()
+
+  return (
+    <section>
+      <h2>RFP Coverage Dashboard</h2>
+      <p className="lead">
+        This demo mirrors the required workflows: alarm planning, approvals, operational zones, alerting logic,
+        vehicle change management, additional functions, print/export, auditability, and integration concepts.
+      </p>
+
+      <div className="grid three">
+        <article className="panel stat">
+          <h3>Alarm Plans</h3>
+          <p className="big">{alarmPlans.length}</p>
+          <small>Draft / Review / Approved / Superseded</small>
+        </article>
+        <article className="panel stat">
+          <h3>Pending Approvals</h3>
+          <p className="big">{approvals.length}</p>
+          <small>Hierarchical release flow with comments and deadlines</small>
+        </article>
+        <article className="panel stat">
+          <h3>Vehicle Tasks</h3>
+          <p className="big">{vehicleTasks.length}</p>
+          <small>New, removed, and replacement workflow</small>
+        </article>
+      </div>
+
+      <div className="grid two">
+        <article className="panel">
+          <h3>Operational Zone Health</h3>
+          <ul>
+            {zones.map((zone) => (
+              <li key={zone.id}>
+                <strong>{zone.name}</strong> ({zone.zoneNumber}) — {zone.hasApprovedPlan ? 'Approved plan' : 'No approved plan'}
+                {zone.changePending ? ' · Change pending' : ''}
+              </li>
+            ))}
+          </ul>
+        </article>
+
+        <article className="panel">
+          <h3>Implemented Functional Coverage</h3>
+          <ul>
+            {functionalCoverage.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </article>
+      </div>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/OperationalZones.tsx <<'EOF'
+import { zones } from '../data/mockData'
+
+export function OperationalZonesPage() {
+  return (
+    <section>
+      <h2>Operational Zones & Geoviewer Simulation</h2>
+      <p className="lead">
+        Supports list + map-style visualization, zone filtering, upload/change flow, and release chain
+        PBKDT → AFK → BFK → LWZ.
+      </p>
+
+      <div className="grid two">
+        <article className="panel">
+          <h3>Zone List</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Zone</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>District</th>
+              </tr>
+            </thead>
+            <tbody>
+              {zones.map((zone) => (
+                <tr key={zone.id}>
+                  <td>
+                    {zone.name}
+                    <small>{zone.zoneNumber}</small>
+                  </td>
+                  <td>{zone.category}</td>
+                  <td>
+                    {zone.hasApprovedPlan ? 'Approved' : 'Missing plan'}
+                    {zone.changePending ? ' · Pending change' : ''}
+                  </td>
+                  <td>{zone.district}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </article>
+
+        <article className="panel map-mock">
+          <h3>Map Mock (Basemap / OSM / Orthophoto placeholder)</h3>
+          <div className="map-grid">
+            {zones.map((zone) => (
+              <button key={zone.id} type="button" className={`zone-chip ${zone.hasApprovedPlan ? 'ok' : 'warn'}`}>
+                {zone.name}
+              </button>
+            ))}
+          </div>
+          <p className="hint">
+            In production: map layers + zone geometry import/export (.geojson, .pdf, .png, .jpg) + zone change
+            commentary and notification handling.
+          </p>
+        </article>
+      </div>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/AlarmPlans.tsx <<'EOF'
+import { Link } from 'react-router-dom'
+import { alarmPlans } from '../data/mockData'
+
+export function AlarmPlansPage() {
+  return (
+    <section>
+      <h2>Alarm Plans</h2>
+      <p className="lead">
+        Includes categories PB, AUTOB, GW, RAIL, SOAP, FKAT with draft/save/duplicate/version flows and changed
+        field visibility during approvals.
+      </p>
+
+      <article className="panel">
+        <div className="actions">
+          <Link className="btn" to="/alarm-plan-editor">
+            Open Alarm Plan Editor Wizard
+          </Link>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Status</th>
+              <th>Version</th>
+              <th>Changed fields</th>
+            </tr>
+          </thead>
+          <tbody>
+            {alarmPlans.map((plan) => (
+              <tr key={plan.id}>
+                <td>{plan.title}</td>
+                <td>{plan.category}</td>
+                <td>{plan.status}</td>
+                <td>{plan.version}</td>
+                <td>{plan.changedFields.join(', ')}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/AlarmPlanEditor.tsx <<'EOF'
+import { categories, zones } from '../data/mockData'
+
+const wizardSteps = [
+  '1) Cover sheet and plan category',
+  '2) Select one or more operational zones',
+  '3) Configure incident categories + keywords + starting alarm levels',
+  '4) Select fire departments, vehicles, and time references',
+  '5) Validate minimum standards and coverage completeness',
+  '6) Review changed fields vs previous approved version',
+  '7) Save draft or submit to release process',
+]
+
+export function AlarmPlanEditorPage() {
+  return (
+    <section>
+      <h2>Alarm Plan Editor (Wizard)</h2>
+      <p className="lead">
+        Demo of the full client-side planning flow, including configurable tooltips, draft persistence concept,
+        coverage validation, and category-specific cover fields.
+      </p>
+
+      <div className="grid two">
+        <article className="panel">
+          <h3>Wizard Steps</h3>
+          <ol>
+            {wizardSteps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </article>
+
+        <article className="panel">
+          <h3>Input Preview</h3>
+          <label>
+            Category
+            <select defaultValue="PB">
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Zones in this plan
+            <select multiple defaultValue={['z-01', 'z-02']}>
+              {zones.map((zone) => (
+                <option key={zone.id} value={zone.id}>
+                  {zone.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div className="actions">
+            <button type="button" className="btn secondary">
+              Save Draft
+            </button>
+            <button type="button" className="btn">
+              Start Approval
+            </button>
+          </div>
+        </article>
+      </div>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/ApprovalCenter.tsx <<'EOF'
+import { useState } from 'react'
+import { alarmPlans } from '../data/mockData'
+import { useAppContext } from '../context/AppContext'
+
+export function ApprovalCenterPage() {
+  const { approvals, approveRequest, rejectRequest } = useAppContext()
+  const [comment, setComment] = useState('')
+
+  return (
+    <section>
+      <h2>Approval Center</h2>
+      <p className="lead">
+        Hierarchical release process with comments, reminders, deadline awareness, rejection handling, and restart
+        behavior for impacted participants.
+      </p>
+
+      <div className="grid two">
+        {approvals.map((item) => {
+          const plan = alarmPlans.find((candidate) => candidate.id === item.planId)
+          return (
+            <article key={item.id} className="panel">
+              <h3>{plan?.title ?? item.planId}</h3>
+              <p>Current step: {item.currentStep}</p>
+              <p>Pending with: {item.pendingWithRole}</p>
+              <p>Deadline: {item.deadline}</p>
+              <p>
+                Changed fields: <em>{plan?.changedFields.join(', ')}</em>
+              </p>
+
+              <label>
+                Comment / Justification
+                <textarea
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  placeholder="Add approval note or rejection explanation"
+                />
+              </label>
+
+              <div className="actions">
+                <button type="button" className="btn" onClick={() => approveRequest(item.id, comment)}>
+                  Confirm
+                </button>
+                <button type="button" className="btn danger" onClick={() => rejectRequest(item.id, comment)}>
+                  Reject (restart)
+                </button>
+              </div>
+
+              <h4>Thread</h4>
+              <ul>
+                {item.comments.map((entry) => (
+                  <li key={`${entry.author}-${entry.createdAt}`}>
+                    <strong>{entry.author}</strong>: {entry.message}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          )
+        })}
+      </div>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/AlertingDevices.tsx <<'EOF'
+export function AlertingDevicesPage() {
+  const units = [
+    'Fire Department / Florian',
+    'Boat',
+    'Drone',
+    'EFU',
+    'Hazmat vehicle',
+    'Aerial rescue vehicle',
+    'Diver unit',
+  ]
+
+  return (
+    <section>
+      <h2>Alerting Devices & Time References</h2>
+      <p className="lead">
+        Demonstrates per-category alerting groups, configurable time references, and under-coverage prevention.
+      </p>
+
+      <article className="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Unit</th>
+              <th>Always</th>
+              <th>Weekday Day</th>
+              <th>Night/Weekend/Holiday</th>
+            </tr>
+          </thead>
+          <tbody>
+            {units.map((unit) => (
+              <tr key={unit}>
+                <td>{unit}</td>
+                <td>✔</td>
+                <td>✔</td>
+                <td>{unit === 'Drone' ? '—' : '✔'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p className="hint">Validation rule sample: if a “Night” setting is enabled, a matching “Day” setting must exist.</p>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/DeploymentOrder.tsx <<'EOF'
+export function DeploymentOrderPage() {
+  return (
+    <section>
+      <h2>Deployment Order</h2>
+      <p className="lead">
+        Internal order is editable by authorized fire departments. External order is derived automatically from other
+        zone planning and shown read-only.
+      </p>
+
+      <div className="grid two">
+        <article className="panel">
+          <h3>Internal Deployment Order (editable)</h3>
+          <ol>
+            <li>B1 Building Fire → TLF 4000 Seewalchen</li>
+            <li>B1 Building Fire → LFB-A2 Seewalchen</li>
+            <li>B2 Building Fire → DLK Vöcklabruck</li>
+            <li>GW1 Water Rescue → Boat AT-22</li>
+          </ol>
+        </article>
+
+        <article className="panel">
+          <h3>External Deployment Order (derived)</h3>
+          <ul>
+            <li>Zone LEV3-4029201 receives FF Seewalchen at T2 from neighboring district plan</li>
+            <li>Zone LEV3-4012032 receives EFU recommendation from district fallback</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/VehicleModifications.tsx <<'EOF'
+import { vehicleTasks } from '../data/mockData'
+
+export function VehicleModificationsPage() {
+  return (
+    <section>
+      <h2>Vehicle Modifications Workflow</h2>
+      <p className="lead">
+        Tracks new vehicles, deletions, and non-identical replacements. Includes replacement suggestions and minimum
+        requirement checks before approval completion.
+      </p>
+
+      <article className="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Vehicle</th>
+              <th>Type</th>
+              <th>Department</th>
+              <th>Status</th>
+              <th>Suggested action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {vehicleTasks.map((task) => (
+              <tr key={task.id}>
+                <td>{task.vehicle}</td>
+                <td>{task.type}</td>
+                <td>{task.fireDepartment}</td>
+                <td>{task.status}</td>
+                <td>{task.suggestion}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/AdditionalModules.tsx <<'EOF'
+const modules = [
+  'Phone list with category, priority, and availability windows',
+  'Heavy-load alarm plan switching (true/false) with status visibility',
+  'Keyword-based checklists (optional item)',
+  'POI collection with map/address and category hierarchy (optional item)',
+  'Fire department additional questionnaire and reminders (optional item)',
+  'Feedback on assignments (optional item)',
+  'Own vehicles/resources status and metadata view',
+  'Document upload and distribution notifications',
+  'Minor alarm communication preferences and contact sequencing',
+]
+
+export function AdditionalModulesPage() {
+  return (
+    <section>
+      <h2>Additional Modules</h2>
+      <p className="lead">
+        Demonstrates required and optional modules from the RFP (Part D, section 9), all modeled in client-side demo
+        form.
+      </p>
+
+      <article className="panel">
+        <ul>
+          {modules.map((moduleItem) => (
+            <li key={moduleItem}>{moduleItem}</li>
+          ))}
+        </ul>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/IntegrationPreview.tsx <<'EOF'
+export function IntegrationPreviewPage() {
+  return (
+    <section>
+      <h2>Integration & Staging Preview</h2>
+      <p className="lead">
+        Production uses interface-server mediation to ELS. This demo simulates the behavior locally with no network
+        dependency.
+      </p>
+
+      <div className="grid two">
+        <article className="panel">
+          <h3>Staging YES</h3>
+          <ul>
+            <li>Alarm level classifications</li>
+            <li>LWZ dispatcher review required before transfer</li>
+            <li>Action: “Approve and push to ELS”</li>
+          </ul>
+        </article>
+
+        <article className="panel">
+          <h3>Staging NO</h3>
+          <ul>
+            <li>Alarm group assignment / alert device matrix</li>
+            <li>Phone contact synchronization</li>
+            <li>Heavy-load switching state</li>
+          </ul>
+        </article>
+      </div>
+
+      <article className="panel">
+        <h3>Interface Security Concept (demo narrative)</h3>
+        <p>
+          The production architecture isolates alarm plan UI from ELS DB through an interface server with strict
+          validation, protocol/port matrix, and layered controls. The demo exposes this concept as documentation only.
+        </p>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/PrintExports.tsx <<'EOF'
+const printItems = [
+  'Phone list',
+  'Alarm plan (all categories)',
+  'LWZ alarm plan with metadata and siren code',
+  'Deployment order (internal/external)',
+  'Operational zones',
+  'Alarm plan dependencies',
+  'Checklists',
+  'Fire alarm system objects',
+  'Complete alarm plan bundle with cover page',
+]
+
+export function PrintExportsPage() {
+  return (
+    <section>
+      <h2>Print & Export Center</h2>
+      <p className="lead">
+        Browser-printable previews for key artifacts. In production, PDF dispatch and external distribution would be
+        connected to approved mail infrastructure.
+      </p>
+
+      <article className="panel">
+        <ul>
+          {printItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <div className="actions">
+          <button type="button" className="btn" onClick={() => window.print()}>
+            Print Current View
+          </button>
+          <button type="button" className="btn secondary">
+            Simulate “Send as PDF by Email”
+          </button>
+        </div>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/AuditLog.tsx <<'EOF'
+import { useAppContext } from '../context/AppContext'
+
+export function AuditLogPage() {
+  const { auditEvents } = useAppContext()
+
+  return (
+    <section>
+      <h2>Audit Log</h2>
+      <p className="lead">
+        Every data-changing action is tracked with actor and timestamp. Read-only page access is intentionally not
+        logged, per RFP requirements.
+      </p>
+
+      <article className="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Target</th>
+            </tr>
+          </thead>
+          <tbody>
+            {auditEvents.map((event) => (
+              <tr key={event.id}>
+                <td>{event.timestamp}</td>
+                <td>{event.actor}</td>
+                <td>{event.action}</td>
+                <td>{event.target}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </article>
+    </section>
+  )
+}
+EOF
+
+cat > src/pages/SecurityArchitecture.tsx <<'EOF'
+export function SecurityArchitecturePage() {
+  return (
+    <section>
+      <h2>Security & Architecture</h2>
+      <p className="lead">
+        The demo is fully client-side by requirement. This page documents how production implementation aligns with
+        the RFP security, resilience, and compliance expectations.
+      </p>
+
+      <div className="grid two">
+        <article className="panel">
+          <h3>Production Security-by-Design Targets</h3>
+          <ul>
+            <li>Keycloak OIDC authentication + centralized role governance</li>
+            <li>JWT validation and claim-based authorization in backend services</li>
+            <li>Interface server isolation (no direct UI-to-ELS DB access)</li>
+            <li>Layered network controls with explicit communication matrix</li>
+            <li>OWASP Top 10 secure coding controls</li>
+            <li>Pen test for external interfaces + independent code review for internal interfaces</li>
+          </ul>
+        </article>
+
+        <article className="panel">
+          <h3>Compliance and Operability</h3>
+          <ul>
+            <li>German-language UI and documentation</li>
+            <li>SBOM delivery and dependency transparency</li>
+            <li>GDPR-compliant processing agreements where applicable</li>
+            <li>Version history retention strategy (10 years in production)</li>
+            <li>Common browser support with standards-based HTML5/CSS3 UI</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+  )
+}
+EOF
+
+cat > src/App.tsx <<'EOF'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { Layout } from './components/Layout'
+import { AdditionalModulesPage } from './pages/AdditionalModules'
+import { AlarmPlanEditorPage } from './pages/AlarmPlanEditor'
+import { AlarmPlansPage } from './pages/AlarmPlans'
+import { AlertingDevicesPage } from './pages/AlertingDevices'
+import { ApprovalCenterPage } from './pages/ApprovalCenter'
+import { AuditLogPage } from './pages/AuditLog'
+import { DashboardPage } from './pages/Dashboard'
+import { DeploymentOrderPage } from './pages/DeploymentOrder'
+import { IntegrationPreviewPage } from './pages/IntegrationPreview'
+import { OperationalZonesPage } from './pages/OperationalZones'
+import { PrintExportsPage } from './pages/PrintExports'
+import { SecurityArchitecturePage } from './pages/SecurityArchitecture'
+import { VehicleModificationsPage } from './pages/VehicleModifications'
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<DashboardPage />} />
+        <Route path="zones" element={<OperationalZonesPage />} />
+        <Route path="alarm-plans" element={<AlarmPlansPage />} />
+        <Route path="alarm-plan-editor" element={<AlarmPlanEditorPage />} />
+        <Route path="approval-center" element={<ApprovalCenterPage />} />
+        <Route path="alerting-devices" element={<AlertingDevicesPage />} />
+        <Route path="deployment-order" element={<DeploymentOrderPage />} />
+        <Route path="vehicle-modifications" element={<VehicleModificationsPage />} />
+        <Route path="additional-modules" element={<AdditionalModulesPage />} />
+        <Route path="integration-preview" element={<IntegrationPreviewPage />} />
+        <Route path="print-exports" element={<PrintExportsPage />} />
+        <Route path="audit-log" element={<AuditLogPage />} />
+        <Route path="security-architecture" element={<SecurityArchitecturePage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
+
+export default App
+EOF
+
+cat > src/main.tsx <<'EOF'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App'
+import { AppProvider } from './context/AppContext'
+import './index.css'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <BrowserRouter>
+      <AppProvider>
+        <App />
+      </AppProvider>
+    </BrowserRouter>
+  </StrictMode>,
+)
+EOF
+
+cat > src/index.css <<'EOF'
+:root {
+  font-family: Inter, 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+  color: #122230;
+  background: #f3f6fa;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #0f2235;
+  color: #eef6ff;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar h1 {
+  margin-bottom: 0.3rem;
+  font-size: 1.4rem;
+}
+
+.subtitle {
+  color: #bfd3e8;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sidebar nav a {
+  text-decoration: none;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  color: #d4e5f5;
+  font-size: 0.92rem;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background: #1f3852;
+  color: #fff;
+}
+
+.content {
+  padding: 1rem 1.4rem 2rem;
+}
+
+.topbar {
+  background: white;
+  border: 1px solid #d3dde7;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.topbar p {
+  margin: 0.2rem 0 0;
+  color: #496077;
+  font-size: 0.9rem;
+}
+
+.badge {
+  background: #fef3c7;
+  color: #7c4c00;
+  border: 1px solid #f6dc8d;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.76rem;
+}
+
+.lead {
+  color: #355068;
+  max-width: 980px;
+  line-height: 1.45;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #d3dde7;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.panel h3 {
+  margin-bottom: 0.8rem;
+}
+
+.stat .big {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #13375a;
+}
+
+small,
+.hint {
+  color: #567086;
+  font-size: 0.85rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+th,
+td {
+  border-bottom: 1px solid #e7edf3;
+  text-align: left;
+  padding: 0.55rem;
+  vertical-align: top;
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.8rem;
+}
+
+.btn {
+  background: #144b7f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.48rem 0.8rem;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn.secondary {
+  background: #4e6b84;
+}
+
+.btn.danger {
+  background: #b53a3a;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.9rem;
+}
+
+select,
+textarea {
+  border: 1px solid #c8d6e3;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font: inherit;
+}
+
+textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.role-switcher {
+  background: #172f48;
+  border-color: #2d4a67;
+}
+
+.role-switcher h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1rem;
+}
+
+.role-switcher label {
+  font-size: 0.85rem;
+  color: #d8e8f7;
+}
+
+.role-switcher select {
+  background: #0f2235;
+  color: #e8f5ff;
+  border-color: #486a88;
+}
+
+.map-mock .map-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.zone-chip {
+  border: 1px solid #bcd;
+  background: #eef4fb;
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+}
+
+.zone-chip.ok {
+  background: #e6f8ed;
+  border-color: #9cd3af;
+}
+
+.zone-chip.warn {
+  background: #fff7e9;
+  border-color: #f2c989;
+}
+
+@media (max-width: 1100px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .grid.two,
+  .grid.three {
+    grid-template-columns: 1fr;
+  }
+}
+EOF
+
+cat > render.yaml <<'EOF'
+services:
+  - type: web
+    name: alarm-plan-demo
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+EOF
+
+cat > README.md <<'EOF'
+# Alarm Plan Demo (Client-Side React)
+
+This repository contains a **fully client-side React + TypeScript demo** for an alarm-plan management application based on the Upper Austrian State Fire Brigade Association RFP.
+
+## Demo Goal
+
+Provide a high-quality demonstration of:
+- Alarm plan creation and versioning
+- Hierarchical approval workflows
+- Operational zones and geoviewer-style interactions
+- Alerting devices and deployment order logic
+- Vehicle change workflows
+- Additional modules (phone list, POI, checklists, heavy-load switching, etc.)
+- Audit logging and print/export center
+- Integration/security architecture understanding
+
+> This is intentionally a **demo-only frontend** with **no backend, no API, and no external persistence**.
+
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- React Router
+
+## Run Locally
+
+```bash
+npm install
+npm run dev
+```
+
+Build production assets:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Demo Behavior Notes
+
+- Identity and role switching are simulated in-client.
+- Approval actions update local UI state.
+- Audit log captures demo write actions.
+- Integration/staging behavior is modeled in UI narratives.
+
+## Render Deployment
+
+A Render blueprint file is included:
+
+- `render.yaml`
+
+It configures static-site build and publish via:
+- Build: `npm ci && npm run build`
+- Publish: `dist`
+
+## Scope Mapping
+
+The app includes pages for all major RFP functional domains:
+- Dashboard
+- Operational Zones
+- Alarm Plans
+- Alarm Plan Editor
+- Approval Center
+- Alerting Devices
+- Deployment Order
+- Vehicle Modifications
+- Additional Modules
+- Integration Preview
+- Print & Exports
+- Audit Log
+- Security & Architecture
+EOF

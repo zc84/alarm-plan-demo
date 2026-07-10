@@ -1,0 +1,744 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ## Goal\
+\
+Extract the software requirements from the RFP and plan a __fully client-side ReactJS demo web application__ that showcases the alarm plan application functionality without any backend, external APIs, or server-side persistence. The demo will use high-quality mock data and browser/local in-memory behavior to simulate the full workflow.\
+\
+## Extracted Software Requirements\
+\
+### 1. Core Product Scope\
+\
+The RFP requests a web application for recording and managing:\
+\
+- Alarm plans.\
+- Operational zones / areas of operation.\
+- Approval and release workflows.\
+- Alerting devices and alarm groups.\
+- Deployment orders.\
+- Vehicle changes and dependencies.\
+- Operationally relevant additional information.\
+- Maintenance/support, documentation, logging, source-code handover, security, and future extensibility.\
+\
+For the demo app, these will be represented as client-side screens, workflows, mock datasets, and simulated state transitions.\
+\
+---\
+\
+### 2. User, Role, and Permission Requirements\
+\
+The application must support role-based access based on a hierarchy of fire brigade roles and organizational scopes.\
+\
+Key roles include:\
+\
+- LWZ employees.\
+- EuS / LKS department employees.\
+- State fire command leadership.\
+- BFK and deputies.\
+- AFK and deputies.\
+- BFB / AFB radio roles.\
+- BFB-EFU / AFB-EFU roles.\
+- PBKDT and deputies.\
+- Fire chief and deputies.\
+- LuN commander / specialist.\
+- Secretary.\
+- Firefighter.\
+- District-level firefighter.\
+- Austrian Water Rescue users.\
+\
+Permission model requirements:\
+\
+- Read/write access depends on alarm plan category and organizational scope.\
+- One person may hold multiple roles.\
+- User must select active role/context after login.\
+- Permission matrix must be adaptable and extensible.\
+- Users can see alarm plans where their own fire department is included, even if they are not the owner.\
+\
+Demo implementation:\
+\
+- Mock login / role selector.\
+- Permission-aware navigation and action buttons.\
+- Simulated scope filtering by fire department, municipality, district, or all Upper Austria.\
+\
+---\
+\
+### 3. Authentication Requirements\
+\
+Production RFP:\
+\
+- Authentication via existing Keycloak using OpenID Connect.\
+- JWT validation in backend.\
+- Roles from Keycloak.\
+- Organizational scopes through Keycloak group paths/user attributes.\
+\
+Demo adaptation:\
+\
+- No real Keycloak or backend.\
+- Client-side simulated authentication.\
+- Mock users, roles, claims, and organizational scopes.\
+- UI should explain where real OIDC/Keycloak integration would occur in production.\
+\
+---\
+\
+### 4. Approval and Release Workflow Requirements\
+\
+The RFP defines a hierarchical approval process for alarm plans and operational zones.\
+\
+Standard alarm plan workflow:\
+\
+1. Authorized fire department member creates alarm plan draft.\
+2. Fire chief/deputy starts release process once validations pass.\
+3. Assigned fire departments and PBKDTs confirm assignments.\
+4. AFK checks/forwards.\
+5. BFK checks/forwards.\
+6. LWZ confirms and transfers to ELS.\
+7. Assigned organizations receive notification after transfer.\
+\
+Required workflow features:\
+\
+- Draft save/resume.\
+- Minimum validation before release.\
+- Approval deadline, e.g. two weeks.\
+- Auto-approval after missed deadline.\
+- Reminder notifications.\
+- Confirm/reject buttons.\
+- Rejection requires comment.\
+- Comments visible in workflow chain.\
+- Comment notifications.\
+- Restart/reopen approval only for impacted parties when certain changes occur.\
+- LWZ can bypass participants.\
+- Initiating fire department can cancel approval.\
+- Changed items must be highlighted compared with previous version.\
+- Pending and completed approvals overview.\
+\
+Special alarm plan categories:\
+\
+- LWZ can create draft alarm plans for categories such as motorway, water, and F-KAT.\
+- LWZ can assign specific groups/users for editing or review.\
+\
+Operational zone approval:\
+\
+- New or changed zones follow PBKDT \uc0\u8594  AFK \u8594  BFK \u8594  LWZ preliminary review.\
+- After LWZ acceptance, alarm plan entry is enabled.\
+\
+Demo implementation:\
+\
+- Interactive workflow board/timeline.\
+- Mock email/notification center.\
+- Approval actions update local state.\
+- Visual changed-field comparison.\
+- Rejection and restart simulation.\
+\
+---\
+\
+### 5. Alarm Plan Creation Requirements\
+\
+Alarm plans must support categories:\
+\
+- PB: compulsory area.\
+- Autob: highway emergency plans.\
+- GW: water alarm plans.\
+- Railway: alarm plans in track areas.\
+- SOAP: special alarm plans for properties.\
+- FKAT: firefighting and disaster relief readiness.\
+\
+Alarm plan contents:\
+\
+- Operational zones.\
+- Incident categories and keywords.\
+- Alarm levels.\
+- Time references.\
+- Fire departments.\
+- Vehicles.\
+- Units/equipment.\
+- Geographical dependencies.\
+- Category-specific cover sheets.\
+- Configurable information texts/tooltips.\
+\
+Functional requirements:\
+\
+- Save draft.\
+- Duplicate existing plan into draft.\
+- Attach multiple operational zones.\
+- Validate coverage completeness.\
+- Validate minimum equipment standards.\
+- Prevent release if coverage gap exists.\
+- Display selected vehicles/equipment summary.\
+- Prevent duplicate vehicle assignment within same deployment category where applicable.\
+- Allow special per-keyword planning when enabled by LWZ.\
+- Minor alarm keywords show notifications but no full alarm plan.\
+\
+Demo implementation:\
+\
+- Multi-step alarm plan wizard.\
+- Mock validation engine.\
+- Equipment coverage summary.\
+- Draft/approved/versioned states.\
+- Category-specific cover sheet forms.\
+\
+---\
+\
+### 6. Operational Zones and Geoviewer Requirements\
+\
+Operational zones must be visible and searchable based on permissions.\
+\
+Map/geoviewer requirements:\
+\
+- Display operational zones.\
+- Support common map layers: basemap, OpenStreetMap, OpenTopoMap, \'d6K50, orthophotos.\
+- Display fire station and vehicle locations.\
+- Show zones without alarm plans with special coloring.\
+- Click zone to open valid alarm plan.\
+- Search/filter zones by text and metadata.\
+- During alarm plan creation, distinguish assigned vs unassigned fire departments/vehicles.\
+\
+Zone modification requirements:\
+\
+- Export selected zone in geoformat.\
+- Create new zone.\
+- Modify existing zone without re-entering alarm plan.\
+- Upload `.jpg`, `.png`, `.pdf`, `.geojson`.\
+- Free-text change description.\
+- LWZ notification after upload.\
+- Original and modified zones downloadable during approval.\
+\
+Demo implementation:\
+\
+- Client-side map-like panel using static SVG/HTML/CSS or lightweight client map mock.\
+- Mock geo layers and markers.\
+- File upload UI simulated locally.\
+- Zone approval workflow.\
+\
+---\
+\
+### 7. Alerting Devices Requirements\
+\
+The application must allow authorized users to configure alerting devices/groups per fire department/unit and operational category.\
+\
+Requirements:\
+\
+- Default time references: always, weekday day, weekday night/weekend/holiday.\
+- LWZ administrators can enable advanced time references.\
+- Validation prevents under-coverage.\
+- Every deployment category must be defined.\
+- LWZ can modify/activate time references, deployment categories, and alarm groups globally or per fire department.\
+- Selection must support many units/equipment types such as logistics, boats, drones, EFU, air support, hazmat, rescue, etc.\
+\
+Demo implementation:\
+\
+- Alerting device matrix screen.\
+- Time-reference toggles.\
+- Coverage validation warnings.\
+- Admin configuration panel.\
+\
+---\
+\
+### 8. Deployment Order Requirements\
+\
+Internal deployment order:\
+\
+- Defines which vehicles deploy in what order, at what time, at which alarm level, to which zone, and for which incident keyword.\
+- Must be configurable by authorized fire department users.\
+- Incident keywords can be grouped by fire departments, including time criteria.\
+\
+External deployment order:\
+\
+- Generated from alarm plan design for other zones.\
+- Display-only.\
+\
+Demo implementation:\
+\
+- Internal dispatch ordering screen with drag-and-drop-like ordering controls.\
+- External derived view.\
+- Mock export/interface preview.\
+\
+---\
+\
+### 9. Vehicle Modification Requirements\
+\
+Vehicle data changes affect alarm plans.\
+\
+Required behavior:\
+\
+- Detect new vehicles from data synchronization.\
+- Notify owning fire department.\
+- Detect removed vehicles.\
+- Notify all fire departments whose plans include the vehicle.\
+- Suggest replacement vehicles.\
+- Show replacement tasks.\
+- Validate replacements against minimum requirements.\
+- Send accepted changes through interface server to ELS in production.\
+- Notify LWZ, PBKDT, AFK, BFK after replacement.\
+\
+Demo implementation:\
+\
+- Vehicle changes task center.\
+- Simulated sync event.\
+- Replacement recommendation and validation.\
+- Mock notification log.\
+\
+---\
+\
+### 10. Data and Integration Requirements\
+\
+Production RFP:\
+\
+- Data stored at state fire brigade command location.\
+- Client provides VM/database server.\
+- ELS is source for vehicle, equipment, incident keywords, alarm plan groups, email addresses, and other data.\
+- Application communicates with ELS only through an independent interface server.\
+- Interface server validates all writes before ELS database changes.\
+- Staging YES data requires LWZ review before ELS transfer.\
+- Staging NO data can be written through interface server without LWZ review.\
+- Old invalid alarm plan versions retained for at least 10 years.\
+\
+Demo adaptation:\
+\
+- No backend, no database, no API.\
+- Mock data stored in TypeScript files and optionally browser localStorage.\
+- Interface server represented as an \'93Integration Preview\'94 screen showing staged vs direct transfer behavior.\
+- Version history simulated in local state/mock data.\
+\
+---\
+\
+### 11. Logging and Audit Requirements\
+\
+- All user actions that change data must be logged with username and timestamp.\
+- Simple views should not be logged.\
+- LWZ employees should see last editor or full editing history per menu/item.\
+\
+Demo implementation:\
+\
+- Client-side audit log store.\
+- Audit timeline visible to LWZ role.\
+\
+---\
+\
+### 12. Print, Export, and Document Requirements\
+\
+Print/export requirements include:\
+\
+- Phone list.\
+- Alarm plan, including categories and metadata.\
+- LWZ alarm plan including siren code and approvals.\
+- Deployment order.\
+- Operational zones.\
+- Alarm plan dependencies.\
+- Checklists.\
+- Fire alarm system objects.\
+- Complete alarm plan bundle with cover sheet.\
+- Export/print constrained by permissions.\
+- Show creation date and print date.\
+- Send PDF by email in production.\
+\
+Demo implementation:\
+\
+- Browser print-ready views.\
+- Mock PDF/email action with toast and notification log.\
+- Export buttons generating client-side JSON/CSV/print views where practical.\
+\
+---\
+\
+### 13. Additional Functional Requirements\
+\
+The RFP includes several additional and optional functions:\
+\
+Required/general:\
+\
+- Phone list.\
+- Printouts.\
+- Heavy-load alarm plan switching.\
+- Notification of communication by fire department.\
+- Overview of own vehicles and resources.\
+- Document uploads.\
+\
+Optional:\
+\
+- Checklists based on deployment keywords.\
+- POI query/management.\
+- Additional information on fire department.\
+- Feedback on an assignment.\
+\
+Demo implementation:\
+\
+- Dedicated modules/cards for each additional function.\
+- Optional items clearly marked but implemented as demo screens where feasible.\
+\
+---\
+\
+### 14. Security, Quality, and Compliance Requirements\
+\
+Production RFP requires:\
+\
+- Secure coding.\
+- OWASP Top 10 awareness.\
+- Security by design.\
+- Developer security training evidence.\
+- Connectivity/security concept.\
+- Network plan and communication matrix.\
+- Cybersecurity testing before acceptance.\
+- Penetration test for external interfaces.\
+- Code review for internal interfaces.\
+- GDPR compliance.\
+- Confidentiality.\
+- SBOM.\
+- German project language and UI.\
+- Common browser support.\
+- HTML5/CSS3, no proprietary browser technologies.\
+\
+Demo adaptation:\
+\
+- Use modern React + TypeScript.\
+- No backend/API reduces attack surface.\
+- Client-side role simulation only; clearly label as demo, not production security.\
+- Include a static \'93Security & Architecture\'94 page describing production approach.\
+\
+---\
+\
+## Engineering Plan for the Client-Side React Demo App\
+\
+### Recommended Stack\
+\
+- __React 18+__\
+- __TypeScript__\
+- __Vite__\
+- __React Router__\
+- __Tailwind CSS__ or CSS modules for high-quality UI\
+- __Lucide React__ for icons\
+- __Local mock data__ in TypeScript files\
+- Optional: browser `localStorage` for demo persistence\
+- Static deployment to Render as a static site\
+\
+No backend, no database server, no external API calls.\
+\
+---\
+\
+### Proposed App Structure\
+\
+```text\
+alarm-plan-demo/\
+  render.yaml\
+  package.json\
+  index.html\
+  vite.config.ts\
+  tsconfig.json\
+  src/\
+    main.tsx\
+    App.tsx\
+    styles.css\
+    data/\
+      mockUsers.ts\
+      mockPermissions.ts\
+      mockAlarmPlans.ts\
+      mockZones.ts\
+      mockVehicles.ts\
+      mockNotifications.ts\
+      mockChecklists.ts\
+    domain/\
+      permissions.ts\
+      validation.ts\
+      workflow.ts\
+      audit.ts\
+      versioning.ts\
+    components/\
+      Layout.tsx\
+      Sidebar.tsx\
+      Header.tsx\
+      RoleSwitcher.tsx\
+      StatusBadge.tsx\
+      Timeline.tsx\
+      PermissionGate.tsx\
+      DataTable.tsx\
+      PrintPanel.tsx\
+    pages/\
+      Dashboard.tsx\
+      LoginRoleSelect.tsx\
+      OperationalZones.tsx\
+      AlarmDevices.tsx\
+      AlarmPlans.tsx\
+      AlarmPlanEditor.tsx\
+      ApprovalCenter.tsx\
+      DeploymentOrder.tsx\
+      VehicleModifications.tsx\
+      PhoneList.tsx\
+      HeavyLoadSwitching.tsx\
+      Checklists.tsx\
+      PoiManagement.tsx\
+      FireDepartmentInfo.tsx\
+      OperationFeedback.tsx\
+      VehicleResources.tsx\
+      Documents.tsx\
+      AuditLog.tsx\
+      IntegrationPreview.tsx\
+      SecurityArchitecture.tsx\
+      PrintExports.tsx\
+```\
+\
+---\
+\
+### Main Demo Screens\
+\
+#### 1. Dashboard\
+\
+Purpose: High-level operational overview.\
+\
+Content:\
+\
+- Active role/context.\
+- Pending approvals.\
+- Draft alarm plans.\
+- Zones without alarm plans.\
+- Vehicle replacement tasks.\
+- Heavy-load switch status.\
+- Recent notifications.\
+\
+#### 2. Mock Login and Role Selection\
+\
+Purpose: Simulate Keycloak/OIDC and multi-role users.\
+\
+Features:\
+\
+- Choose demo user.\
+- Select active role/function.\
+- Select organizational scope.\
+- Display mock JWT claims.\
+\
+#### 3. Operational Zones\
+\
+Purpose: Simulate geoviewer and zone management.\
+\
+Features:\
+\
+- Map-like visual zone panel.\
+- Filter/search table.\
+- Zone metadata.\
+- Color-coded state: approved, draft, missing alarm plan, change pending.\
+- Upload new/changed zone.\
+- Start zone approval process.\
+\
+#### 4. Alarm Devices\
+\
+Purpose: Configure alerting devices/groups.\
+\
+Features:\
+\
+- Fire department/unit selector.\
+- Operational category matrix.\
+- Time reference configuration.\
+- Coverage warnings.\
+- Admin-only advanced settings.\
+\
+#### 5. Alarm Plans\
+\
+Purpose: Browse, create, duplicate, edit, and version alarm plans.\
+\
+Features:\
+\
+- Category tabs: PB, Autob, GW, Railway, SOAP, FKAT.\
+- Status filters: Draft, In approval, Approved, Rejected, Superseded.\
+- Duplicate to draft.\
+- Version history.\
+- Dependency view.\
+\
+#### 6. Alarm Plan Editor\
+\
+Purpose: Demo the central alarm plan creation workflow.\
+\
+Suggested steps:\
+\
+1. Select category and cover sheet.\
+2. Select operational zones.\
+3. Select incident categories/keywords.\
+4. Configure alarm levels and time references.\
+5. Select fire departments and vehicles.\
+6. Review equipment coverage/minimum standards.\
+7. Compare changes against previous approved version.\
+8. Submit for approval.\
+\
+#### 7. Approval Center\
+\
+Purpose: Show pending and completed permits.\
+\
+Features:\
+\
+- Pending approvals assigned to current user.\
+- Workflow timeline.\
+- Deadline countdown.\
+- Confirm/reject with comments.\
+- Manual reminder button.\
+- Bypass participant for LWZ.\
+- Cancellation by initiator.\
+- History of previous approvals.\
+\
+#### 8. Deployment Order\
+\
+Purpose: Internal and external deployment ordering.\
+\
+Features:\
+\
+- Internal editable order by keyword/alarm level/time.\
+- External derived read-only order.\
+- Mock subsystem interface preview.\
+\
+#### 9. Vehicle Modifications\
+\
+Purpose: Show how vehicle sync changes create tasks.\
+\
+Features:\
+\
+- New vehicle detected.\
+- Removed vehicle detected.\
+- Replacement suggestion.\
+- Minimum requirement validation.\
+- Notification simulation.\
+\
+#### 10. Additional Function Modules\
+\
+Screens:\
+\
+- Phone list.\
+- Heavy-load switching.\
+- Checklists.\
+- POI management.\
+- Fire department additional information.\
+- Operation feedback.\
+- Own vehicles/resources.\
+- Documents.\
+\
+#### 11. Integration Preview\
+\
+Purpose: Represent production ELS/interface-server behavior without real APIs.\
+\
+Features:\
+\
+- Mock data sources.\
+- Staging YES/NO examples.\
+- Simulated transfer queue.\
+- Communication matrix table.\
+\
+#### 12. Security & Architecture\
+\
+Purpose: Show compliance understanding.\
+\
+Content:\
+\
+- Production architecture explanation.\
+- Keycloak/OIDC model.\
+- Interface server isolation.\
+- OWASP/security-by-design principles.\
+- Audit logging.\
+- SBOM/documentation expectations.\
+- Demo limitations.\
+\
+#### 13. Print & Export Center\
+\
+Purpose: Demonstrate printouts.\
+\
+Features:\
+\
+- Print-ready alarm plan.\
+- Phone list printout.\
+- Deployment order printout.\
+- Dependencies printout.\
+- Browser print button.\
+- Mock \'93send PDF by email\'94 action.\
+\
+---\
+\
+## Render Blueprint Configuration\
+\
+The demo should deploy as a Render static site. I will include a `render.yaml` like this:\
+\
+```yaml\
+services:\
+  - type: web\
+    name: alarm-plan-demo\
+    runtime: static\
+    buildCommand: npm ci && npm run build\
+    staticPublishPath: dist\
+    pullRequestPreviewsEnabled: true\
+    envVars:\
+      - key: NODE_VERSION\
+        value: 20\
+```\
+\
+Depending on Render\'92s current static-site schema, I may adjust this to the supported blueprint format during implementation.\
+\
+---\
+\
+## Deliverables\
+\
+When you switch me to\
+\
+Act Mode (\uc0\u8984 \u8679 A), I will create:\
+\
+1. A complete local React + TypeScript demo app.\
+2. High-quality mock data covering roles, alarm plans, zones, vehicles, workflows, notifications, and audit logs.\
+3. Client-side routing and UI for the RFP functionality.\
+4. Permission-aware demo behavior.\
+5. Simulated approval workflows.\
+6. Simulated geoviewer/operational zone views.\
+7. Simulated integration/staging/security architecture pages.\
+8. Print/export demo views.\
+9. `render.yaml` blueprint config for Render deployment.\
+10. README with setup, demo users, scope, and limitations.\
+\
+---\
+\
+## Success Criteria\
+\
+The task is complete when:\
+\
+- The app runs locally with `npm install` and `npm run dev`.\
+- The app builds successfully with `npm run build`.\
+- All major RFP functional areas are represented in the client-side demo.\
+- No backend, database, or external API is required.\
+- Mock data is realistic and high quality.\
+- Render blueprint config exists.\
+- Demo limitations are clearly documented.\
+\
+---\
+\
+## Implementation Phases\
+\
+1. __Project setup__\
+\
+   - Create Vite React TypeScript app.\
+   - Add routing, styling, icons, base layout.\
+\
+2. __Domain model and mock data__\
+\
+   - Define users, roles, permissions, organizations, alarm plans, zones, vehicles, approvals, notifications.\
+\
+3. __Core UI shell__\
+\
+   - Dashboard, sidebar, header, role switcher, permission gates.\
+\
+4. __Alarm planning workflow__\
+\
+   - Alarm plan list, editor wizard, validation, versioning, dependencies.\
+\
+5. __Approval workflow__\
+\
+   - Pending approvals, timeline, confirm/reject, comments, reminders, bypass, cancellation.\
+\
+6. __Operational modules__\
+\
+   - Operational zones/geoviewer, alerting devices, deployment order, vehicle modifications.\
+\
+7. __Additional modules__\
+\
+   - Phone list, heavy-load switching, checklists, POIs, documents, resources, fire department info, operation feedback.\
+\
+8. __Compliance/demo-support modules__\
+\
+   - Integration preview, security architecture, audit log, print/export center.\
+\
+9. __Deployment and documentation__\
+\
+   - Add `render.yaml` and README.\
+   - Build/test locally.\
+}
