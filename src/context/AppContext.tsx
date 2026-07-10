@@ -17,6 +17,7 @@ interface AppContextValue {
   setScope: (scopeType: ScopeType, scopeValue: string) => void
   approveRequest: (approvalId: string, comment?: string) => void
   rejectRequest: (approvalId: string, comment: string) => void
+  setApprovalStatus: (approvalId: string, status: ApprovalRequest['status'], comment?: string) => void
   autoApproveOverdue: () => void
   sendReminder: (approvalId: string) => void
   bypassRequest: (approvalId: string, comment?: string) => void
@@ -142,6 +143,26 @@ export function AppProvider({ children }: PropsWithChildren) {
       title: 'Approval rejected',
       body: `${approvalId} was rejected with comment: ${comment}`,
       severity: 'WARNING',
+    })
+  }
+
+  const setApprovalStatus = (approvalId: string, status: ApprovalRequest['status'], comment?: string) => {
+    setApprovalState((prev) =>
+      prev.map((item) =>
+        item.id === approvalId
+          ? {
+              ...item,
+              status,
+              comment: comment ?? item.comment,
+            }
+          : item,
+      ),
+    )
+
+    addAuditEvent({
+      actor: currentContext.role,
+      action: `Approval status set to ${status}`,
+      target: approvalId,
     })
   }
 
@@ -303,6 +324,7 @@ export function AppProvider({ children }: PropsWithChildren) {
       setScope: (scopeType, scopeValue) => setCurrentContext((prev) => ({ ...prev, scopeType, scopeValue })),
       approveRequest,
       rejectRequest,
+      setApprovalStatus,
       autoApproveOverdue,
       sendReminder,
       bypassRequest,

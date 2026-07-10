@@ -1,9 +1,11 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { PageSection } from '../components/PageSection'
 import { useAppContext } from '../context/AppContext'
 
 export function DashboardPage() {
   const { approvals, alarmPlans, operationZones, vehicleTasks, notifications, users, currentContext, roleDefinitions } = useAppContext()
+  const [operationMode, setOperationMode] = useState<'NORMAL' | 'HEAVY_LOAD'>('NORMAL')
 
   const getNotificationLink = (title: string, body: string) => {
     const normalized = `${title} ${body}`.toLowerCase()
@@ -36,6 +38,21 @@ export function DashboardPage() {
   const openVehicleTasks = vehicleTasks.filter((item) => item.status === 'OPEN').length
   const totalActionItems = pendingApprovals + zonesWithoutPlan + openVehicleTasks
   const criticalFocus = pendingApprovals + zonesWithoutPlan
+
+  const toggleOperationMode = () => {
+    const nextMode = operationMode === 'NORMAL' ? 'HEAVY_LOAD' : 'NORMAL'
+    const confirmationMessage =
+      nextMode === 'HEAVY_LOAD'
+        ? 'Activate Heavy-load mode? This should only be used during major incident peaks.'
+        : 'Deactivate Heavy-load mode and return to normal operations?'
+
+    if (!window.confirm(confirmationMessage)) {
+      return
+    }
+
+    setOperationMode(nextMode)
+  }
+
   const overviewLinks = [
     { label: 'Open approvals', value: pendingApprovals, to: '/approval-center', helper: 'Review pending approval workflow tasks', tone: 'attention' },
     { label: 'Draft alarm plans', value: draftPlans, to: '/alarm-plans', helper: 'Continue plan drafting and lifecycle updates', tone: 'neutral' },
@@ -87,6 +104,19 @@ export function DashboardPage() {
               Priority focus
               <strong>{criticalFocus}</strong>
             </span>
+          </div>
+        </div>
+
+        <div className="dashboard-mode-toggle top-gap">
+          <div>
+            <p className="dashboard-hero-eyebrow">Operation profile</p>
+            <p className="muted">Switch between normal dispatch flow and heavy-load operation profile.</p>
+          </div>
+          <div className="dashboard-mode-toggle-actions">
+            <span className={`status-badge ${operationMode === 'HEAVY_LOAD' ? 'mode-heavy' : 'mode-normal'}`}>{operationMode}</span>
+            <button type="button" className="action-btn action-secondary" onClick={toggleOperationMode}>
+              {operationMode === 'HEAVY_LOAD' ? 'Set normal mode' : 'Activate heavy-load mode'}
+            </button>
           </div>
         </div>
 

@@ -3,11 +3,10 @@ import { PageSection } from '../components/PageSection'
 
 const modules = [
   { label: 'Phone directory', route: '/phone-list' },
-  { label: 'Heavy-load mode switching', route: '/heavy-load-switching' },
+  { label: 'Heavy-load mode control (Dashboard)', route: '/' },
   { label: 'Operational checklists', route: '/checklists' },
   { label: 'POI management', route: '/poi-management' },
   { label: 'Fire department profile extensions', route: '/fire-department-info' },
-  { label: 'Mission feedback', route: '/operation-feedback' },
   { label: 'Custom vehicles & resources', route: '/vehicle-resources' },
   { label: 'Document workspace', route: '/documents-workspace' },
 ]

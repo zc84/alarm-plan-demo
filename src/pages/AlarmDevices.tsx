@@ -6,6 +6,14 @@ const rows = [
   ['Water rescue', 'Special water response', 'Weekend/night', 'OK'],
 ]
 
+function getDeviceCompositeStatus(validation: string) {
+  if (validation.toLowerCase().includes('warning')) {
+    return { label: 'Update pending', className: 'zone-status-pending' }
+  }
+
+  return { label: 'Ready', className: 'zone-status-ready' }
+}
+
 export function AlarmDevicesPage() {
   return (
     <div className="page-grid">
@@ -16,17 +24,24 @@ export function AlarmDevicesPage() {
               <th>Category</th>
               <th>Alarm group</th>
               <th>Time reference</th>
-              <th>Validation</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row[0]}>
-                {row.map((cell) => (
-                  <td key={cell}>{cell}</td>
-                ))}
-              </tr>
-            ))}
+            {rows.map((row) => {
+              const status = getDeviceCompositeStatus(row[3])
+
+              return (
+                <tr key={row[0]}>
+                  <td>{row[0]}</td>
+                  <td>{row[1]}</td>
+                  <td>{row[2]}</td>
+                  <td>
+                    <span className={`status-badge ${status.className}`}>{status.label}</span>
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </PageSection>

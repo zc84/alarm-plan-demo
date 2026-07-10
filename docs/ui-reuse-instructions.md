@@ -4,33 +4,37 @@ Use this guide to apply the same Dashboard UX patterns on other pages.
 
 ## UI/UX skill to use (best choice)
 
-### **Information Hierarchy** (Top recommendation)
+The relevant skill in this environment is **`artifact-design`** (UI/UX design fundamentals — hierarchy, spacing, theming, contrast). Invoke it before doing visual work. For KPI number/stat treatments specifically, **`dataviz`** is also useful.
 
-If you choose only one UI/UX skill for these patterns, use **Information Hierarchy**.
+The guiding *principle* these patterns follow is **information hierarchy** (this is a design principle, not a separately invokable skill).
 
-Why this is the best fit:
+Why this is the right principle here:
 - KPI numbers (like *Action items* and *Priority focus*) are primary data and must be visually dominant.
 - Notification cross-links are secondary actions and should be visible but not louder than the message.
 - A clear hierarchy helps users scan quickly during operational work.
 
 How to apply it in this project:
-1. Make key numbers the strongest visual element (size, weight, center alignment).
+1. Make key numbers the strongest visual element (size and weight first). **Alignment follows the card type** — the primary overview KPIs (`.stats-link`) stay left-aligned in a grid; only the compact secondary summary chips (`.dashboard-hero-chips`) are centered. Do not center a left-aligned KPI card just to follow this doc.
 2. Keep labels short and supportive (uppercase caption style is fine).
 3. Keep notification body text readable and calm.
 4. Render cross-links as clear secondary CTAs (small but high-contrast, consistent position).
 5. Preserve spacing rhythm (`margin-top`, small gaps) so cards are easy to scan.
+6. Respect the active role theme — drive color from tokens (`var(--muted-text)`, `var(--dashboard-*)`), never hardcode the rose palette, so the command/field/district themes stay consistent.
 
 Quick self-check before shipping:
 - Can I identify the key number in under 1 second?
 - Can I understand the notification meaning without clicking?
 - Is the cross-link obvious, but not visually competing with the title/value?
+- Does the page still read correctly under every role theme (not just the default rose one)?
 
-## 1) Center numbers inside KPI chips/cards
+## 1) Center numbers inside compact summary chips
+
+> Scope: this applies to the small **summary chips** (`.dashboard-hero-chips`), not the primary overview KPI cards (`.stats-link`), which stay left-aligned. Center only where the chip is a compact 2-up/3-up summary.
 
 ### Markup pattern
 
 ```tsx
-<div className="kpi-chips">
+<div className="dashboard-hero-chips">
   <span>
     Action items
     <strong>{totalActionItems}</strong>
@@ -45,18 +49,18 @@ Quick self-check before shipping:
 ### CSS pattern
 
 ```css
-.kpi-chips span {
+.dashboard-hero-chips span {
   display: grid;
   gap: 0.15rem;
 }
 
-.kpi-chips strong {
+.dashboard-hero-chips strong {
   display: block;
   text-align: center;
 }
 ```
 
-> In Dashboard this is implemented via `.dashboard-hero-chips strong` in `src/App.css`.
+> In Dashboard this is implemented via `.dashboard-hero-chips span` / `.dashboard-hero-chips strong` in `src/App.css`.
 
 ---
 
@@ -102,7 +106,7 @@ const getNotificationLink = (title: string, body: string) => {
       <strong>{item.title}</strong>
       <p>{item.body}</p>
       {link ? (
-        <Link to={link.to} className="notification-link">
+        <Link to={link.to} className="dashboard-notification-link">
           {link.label} →
         </Link>
       ) : null}
@@ -114,7 +118,7 @@ const getNotificationLink = (title: string, body: string) => {
 ### Link styling
 
 ```css
-.notification-link {
+.dashboard-notification-link {
   display: inline-flex;
   align-items: center;
   margin-top: 0.35rem;
@@ -123,7 +127,7 @@ const getNotificationLink = (title: string, body: string) => {
 }
 ```
 
-> In Dashboard this is implemented as `.dashboard-notification-link` in `src/App.css`.
+> Implemented as `.dashboard-notification-link` in `src/App.css`. When reusing on another page, keep the `dashboard-notification-link` class (or clone it under a page-specific name with the same rules) so link spacing and weight stay consistent.
 
 ---
 
@@ -166,18 +170,23 @@ Keep rounded chips/cards and supporting description text visually consistent acr
 }
 ```
 
+> **Important:** `.rounded-element` only supplies the border, radius, and background. It has **no padding and no internal layout** on its own. The chip layout (padding, `display: grid`, label/value stacking) comes from a container class such as `.dashboard-context-chips span` or `.identity-context-chips .rounded-element` in `src/App.css`. When reusing on a new page, wrap the chips in a layout container (or add the padding/grid rules to your own wrapper) — dropping a bare `.rounded-element` in will render an unpadded box.
+
 ### Markup pattern
 
 ```tsx
 <p className="section-description">Core KPIs aligned with emergency planning requirements</p>
 
-<span className="rounded-element">
-  Scope
-  <strong>{scopeType} / {scopeValue}</strong>
-</span>
+{/* The parent supplies padding + grid layout; .rounded-element supplies the surface. */}
+<div className="dashboard-context-chips">
+  <span className="rounded-element">
+    Scope
+    <strong>{scopeType} / {scopeValue}</strong>
+  </span>
+</div>
 ```
 
-> In Dashboard this pattern is used for spotlight/supporting descriptions and top-right context chips (including Scope).
+> In Dashboard this pattern is used for spotlight/supporting descriptions and top-right context chips (including Scope), always inside a `.dashboard-context-chips` (or equivalent) layout container.
 
 ---
 
@@ -186,19 +195,21 @@ Keep rounded chips/cards and supporting description text visually consistent acr
 ### Goal
 Keep table text easy to scan while preserving clear hierarchy between header labels and row data.
 
-### Recommended table text style
+### Recommended table text style (matches `src/App.css`)
 
 ```css
 .table th {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #7f1d1d;
+  color: var(--muted-text);   /* theme-aware: rose / blue / green / amber per role */
+  background: var(--border-soft);
 }
 
 .table td {
-  color: #0f172a;
+  color: #1f2937;             /* neutral slate, matches global body ink */
   line-height: 1.45;
+  background: #ffffff;
 }
 ```
 
@@ -207,7 +218,7 @@ Keep table text easy to scan while preserving clear hierarchy between header lab
 1. Keep header labels compact and uppercase for fast column recognition.
 2. Keep body text neutral and highly readable (avoid decorative colors in core data cells).
 3. Use consistent row spacing/padding so dense operational tables remain scannable.
-4. If role-based themes are active, preserve contrast first; accents are secondary.
+4. If role-based themes are active, drive header color from `var(--muted-text)` (and tints from `var(--border-soft)`) so headers follow the active theme instead of staying rose. Preserve contrast first; accents are secondary.
 
 ---
 
@@ -222,5 +233,5 @@ Keep table text easy to scan while preserving clear hierarchy between header lab
   - `.dashboard-hero-chips strong` (centered KPI number)
   - `.dashboard-notification-link` (notification cross-link style)
   - `.section-description` (shared description style)
-  - `.rounded-element` (shared rounded card/chip style)
-  - `.table th` / `.table td` text hierarchy conventions
+  - `.rounded-element` (shared rounded surface — pair with a layout container for padding/grid)
+  - `.table th` / `.table td` text hierarchy conventions (theme-aware header color via `var(--muted-text)`)

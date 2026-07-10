@@ -12,6 +12,18 @@ const zoneGeo: Record<string, { lat: number; lon: number; x: number; y: number }
   'OZ-220': { lat: 48.1929, lon: 14.1114, x: 32, y: 63 },
 }
 
+function getZoneCompositeStatus(zone: { hasApprovedPlan: boolean; changePending: boolean }) {
+  if (!zone.hasApprovedPlan) {
+    return { label: 'Missing plan', className: 'zone-status-missing' }
+  }
+
+  if (zone.changePending) {
+    return { label: 'Update pending', className: 'zone-status-pending' }
+  }
+
+  return { label: 'Ready', className: 'zone-status-ready' }
+}
+
 export function OperationalZonesPage() {
   const { operationZones } = useAppContext()
   const [search, setSearch] = useState('')
@@ -205,7 +217,7 @@ export function OperationalZonesPage() {
       </PageSection>
 
       <PageSection title="Zone metrics" subtitle="Quick overview of plan coverage and change backlog">
-        <ul className="stats-grid">
+        <ul className="stats-grid stats-grid-kpi">
           <li>
             <span>Total zones</span>
             <strong>{metrics.total}</strong>
@@ -222,7 +234,7 @@ export function OperationalZonesPage() {
       </PageSection>
 
       <PageSection title="Zone registry" subtitle="Structured list view for operational administration">
-        <table className="table">
+        <table className="table table-centered">
           <thead>
             <tr>
               <th>Zone</th>
@@ -232,14 +244,20 @@ export function OperationalZonesPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredZones.map((zone) => (
-              <tr key={zone.id}>
-                <td>{zone.zoneNumber}</td>
-                <td>{zone.municipality}</td>
-                <td>{zone.district}</td>
-                <td>{zone.hasApprovedPlan ? 'Approved' : 'Missing'} / {zone.changePending ? 'Change pending' : 'No pending changes'}</td>
-              </tr>
-            ))}
+            {filteredZones.map((zone) => {
+              const zoneStatus = getZoneCompositeStatus(zone)
+
+              return (
+                <tr key={zone.id}>
+                  <td>{zone.zoneNumber}</td>
+                  <td>{zone.municipality}</td>
+                  <td>{zone.district}</td>
+                  <td>
+                    <span className={`status-badge ${zoneStatus.className}`}>{zoneStatus.label}</span>
+                  </td>
+                </tr>
+              )
+            })}
             {filteredZones.length === 0 ? (
               <tr>
                 <td colSpan={4} className="muted">

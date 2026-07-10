@@ -11,18 +11,13 @@ const navItems = [
   { to: '/alarm-devices', label: 'Alarm Devices', icon: '⏺' },
   { to: '/deployment-order', label: 'Deployment Order', icon: '⇅' },
   { to: '/vehicle-modifications', label: 'Vehicle Changes', icon: '⚙' },
-  { to: '/additional-modules', label: 'Additional Modules', icon: '⊞' },
   { to: '/phone-list', label: 'Phone List', icon: '☎' },
-  { to: '/heavy-load-switching', label: 'Heavy-Load Switch', icon: '⟲' },
   { to: '/checklists', label: 'Checklists', icon: '☑' },
   { to: '/poi-management', label: 'POI Management', icon: '⌘' },
   { to: '/fire-department-info', label: 'FD Info', icon: '⚑' },
-  { to: '/operation-feedback', label: 'Operation Feedback', icon: '✎' },
   { to: '/vehicle-resources', label: 'Vehicle Resources', icon: '⚒' },
   { to: '/documents-workspace', label: 'Documents', icon: '☰' },
   { to: '/integration-preview', label: 'Integration Preview', icon: '⇄' },
-  { to: '/security-architecture', label: 'Security & Architecture', icon: '⛨' },
-  { to: '/print-exports', label: 'Print & Exports', icon: '⎙' },
   { to: '/audit-log', label: 'Audit Log', icon: '◷' },
 ]
 
@@ -38,9 +33,9 @@ export function Layout() {
     const theme =
       currentContext.role === 'LWZ_EMPLOYEE' || currentContext.role === 'STATE_COMMAND'
         ? 'lwz'
-        : currentContext.role === 'FIRE_CHIEF' || currentContext.role === 'SECRETARY'
+        : currentContext.role === 'SECRETARY'
           ? 'command'
-          : currentContext.role === 'FIREFIGHTER'
+          : currentContext.role === 'FIREFIGHTER' || currentContext.role === 'FIRE_CHIEF'
             ? 'field'
             : 'district'
 

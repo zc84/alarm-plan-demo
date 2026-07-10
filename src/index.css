@@ -10,7 +10,28 @@
   --border-soft: #fde7e9;
   --border-strong: rgba(185, 28, 28, 0.28);
   --muted-text: #7f1d1d;
+  --caption-text: #64748b;
   --shadow-soft: 0 22px 38px -28px rgba(127, 29, 29, 0.35);
+
+  /* Rounded-element criteria — mirrors the dashboard chips/cards (theme-aware border + shared surface) */
+  --rounded-border: rgba(253, 164, 175, 0.55);
+  --rounded-surface: linear-gradient(155deg, rgba(255, 255, 255, 0.98), rgba(250, 251, 255, 0.92));
+
+  /* Shared sections + tables (role-aware) */
+  --section-border: var(--border);
+  --section-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(248, 251, 255, 0.95));
+  --section-shadow: var(--shadow-soft);
+  --section-header-border: var(--border-soft);
+  --section-header-bg: linear-gradient(180deg, rgba(248, 250, 255, 0.8), rgba(255, 255, 255, 0.55));
+  --section-title: var(--muted-text);
+
+  --table-border: var(--border-soft);
+  --table-shadow: 0 18px 34px -30px rgba(127, 29, 29, 0.32);
+  --table-header-bg: var(--border-soft);
+  --table-header-text: var(--muted-text);
+  --table-row-text: #1f2937;
+  --table-row-bg: #ffffff;
+  --table-row-bg-alt: #fdfdff;
 }
 
 * {
@@ -33,6 +54,10 @@ body[data-role-theme='lwz'] {
   --border: #f3c8cc;
   --border-soft: #fde7e9;
   --muted-text: #7f1d1d;
+  --section-title: #7f1d1d;
+  --section-header-bg: linear-gradient(180deg, #fff7f7 0%, #ffffff 100%);
+  --table-header-text: #7f1d1d;
+  --table-header-bg: #fde7e9;
 }
 
 body[data-role-theme='command'] {
@@ -41,6 +66,12 @@ body[data-role-theme='command'] {
   --border: #cddff8;
   --border-soft: #e3efff;
   --muted-text: #1e3a8a;
+  --rounded-border: rgba(147, 197, 253, 0.6);
+  --table-shadow: 0 18px 34px -30px rgba(30, 58, 138, 0.32);
+  --section-title: #1e3a8a;
+  --section-header-bg: linear-gradient(180deg, #f3f8ff 0%, #ffffff 100%);
+  --table-header-text: #1e3a8a;
+  --table-header-bg: #e3efff;
 }
 
 body[data-role-theme='field'] {
@@ -49,6 +80,12 @@ body[data-role-theme='field'] {
   --border: #bfe9d5;
   --border-soft: #dcf7ea;
   --muted-text: #166534;
+  --rounded-border: rgba(134, 239, 172, 0.6);
+  --table-shadow: 0 18px 34px -30px rgba(22, 101, 52, 0.28);
+  --section-title: #166534;
+  --section-header-bg: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+  --table-header-text: #166534;
+  --table-header-bg: #dcf7ea;
 }
 
 body[data-role-theme='district'] {
@@ -57,6 +94,12 @@ body[data-role-theme='district'] {
   --border: #f6e2b5;
   --border-soft: #fcf0d8;
   --muted-text: #92400e;
+  --rounded-border: rgba(251, 191, 36, 0.62);
+  --table-shadow: 0 18px 34px -30px rgba(146, 64, 14, 0.3);
+  --section-title: #92400e;
+  --section-header-bg: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
+  --table-header-text: #92400e;
+  --table-header-bg: #fcf0d8;
 }
 
 a {

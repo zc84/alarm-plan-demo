@@ -41,8 +41,6 @@ export function LoginRoleSelectPage() {
   return (
     <div className="page-grid identity-page">
       <PageSection title="Identity & access">
-        <p className="section-description">Select user</p>
-
         <div className="form-grid">
           <label>
             User
